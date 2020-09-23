@@ -1,12 +1,14 @@
-import React, { Component, Fragment} from 'react'
+import React, { Component, Fragment } from 'react'
 import TodoItem from './todoItem'
+import axios from 'axios';
 import './style.css'
 
 class TodoList extends Component {
   constructor(props) {
     super(props)
+    // 当组件的state或者props发生改变的时候，render函数就会重新执行
     this.state = {
-      inputValue: 'hello',
+      inputValue: '',
       list: []
     }
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -14,7 +16,40 @@ class TodoList extends Component {
     this.handleDeleteClick = this.handleDeleteClick.bind(this)
   }
 
+  /**
+   * 生命周期函数指在某一个时刻组件会自动调用执行的函数
+   */
+
+  // 在组件即将被挂载到页面时候执行
+  componentWillMount() {
+    console.log('componentWillMount')
+  }
+
+  // 在组件被挂载到页面后执行，ajax请求放在这里
+  componentDidMount() {
+    axios.get('/api/todolist').then(res => {
+      console.log(res)
+    })
+  }
+
+  // 组件更新之前执行，返回一个boolean，决定组件是否更新，返回false的话，输入框则不会有效
+  shouldComponentUpdate() {
+    console.log('shouldComponentUpdate')
+    return true
+  }
+
+  // 组件被更新之前，在shouldComponentUpdate 返回true后执行，如果返回false则不执行
+  componentWillUpdate() {
+    console.log('componentWillUpdate')
+  }
+
+  // 组件更新完成之后执行
+  componentDidUpdate() {
+    console.log('componentDidUpdate')
+  }
+
   render() {
+    console.log('parent render')
     return (
       // Fragment可替代最外层的div元素
       <Fragment>
@@ -25,12 +60,13 @@ class TodoList extends Component {
             id="insertArea"
             className="input"
             value={this.state.inputValue}
-            onChange={this.handleInputChange}  
+            onChange={this.handleInputChange}
+            ref={(input) => {this.input = input}}  
           />
           <button onClick={this.handleSubmitClick}>提交</button>
         </div>
         <div>
-          <ul>{this.getTodoList()}</ul>
+          <ul ref={(ul) => {this.ul = ul}}>{this.getTodoList()}</ul>
         </div>
       </Fragment>
     )
@@ -54,7 +90,7 @@ class TodoList extends Component {
   }
 
   handleInputChange(e) {
-    const inputValue = e.target.value
+    const inputValue = this.input.value
     this.setState(() => ({
       inputValue
     }))
@@ -68,7 +104,9 @@ class TodoList extends Component {
     this.setState((prevState) => ({
       list: [...prevState.list, prevState.inputValue],
       inputValue: ''
-    }))
+    }), () => { // 异步执行完之后再执行
+      // console.log(this.ul.querySelectorAll('div').length)
+    })
 
     // this.setState({
     //   list: [...this.state.list, this.state.inputValue],
