@@ -1,11 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import TodoList from './todoList';
-import App from './App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import TodoList from './todoList'
 
 ReactDOM.render(
   <div>
-    <App />
+    <TodoList />
   </div>,
   document.getElementById('root')
 );
