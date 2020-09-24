@@ -12,7 +12,7 @@ class TodoList extends Component {
       list: []
     }
     this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleSubmitClick = this.handleSubmitClick.bind(this)
+    // this.handleSubmitClick = this.handleSubmitClick.bind(this)
     this.handleDeleteClick = this.handleDeleteClick.bind(this)
   }
 
