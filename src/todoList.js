@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import 'antd/dist/antd.css'
-import { Input, Button, List } from 'antd'
 import store from './store/index'
-import { getInputChangeAction, getAddItemAction, getDeleteItemAction } from './store/actionCreators';
+import { getInputChangeAction, getAddItemAction, getDeleteItemAction, getTodoList } from './store/actionCreators';
+import TodoListUI from './todoListUI'
 
 class TodoList extends Component {
   constructor(props) {
@@ -16,35 +16,20 @@ class TodoList extends Component {
   }
 
   render() {
-    return (
-      <Fragment>
-        <div>
-          <Input
-            style={{width: '300px',margin: '10px 5px 0 5px'}}
-            value={this.state.inputValue}
-            onChange={this.handleInputChange}
-          />
-          <Button type="primary" onClick={this.handleSubmitClick}>提交</Button>
-        </div>
-        <List
-          rowKey={record => record}
-          style={{width: '300px',margin: '10px 5px 0 5px'}}
-          bordered
-          dataSource={this.state.list}
-          renderItem={(item, index) => (
-            <List.Item>
-              {item}
-              <Button
-                style={{float: 'right', marginTop: '-5px'}}
-                danger
-                type="text"
-                onClick={() => this.handleDeleteClick(index)}
-              >删除</Button>
-            </List.Item>
-          )}
-        />
-      </Fragment>
-    )
+    return <TodoListUI 
+      inputValue={this.state.inputValue}
+      list={this.state.list}
+      handleInputChange={this.handleInputChange}
+      handleSubmitClick={this.handleSubmitClick}
+      handleDeleteClick={this.handleDeleteClick}
+    />
+  }
+
+  componentDidMount() {
+    const action = getTodoList()
+    // getTodoList 返回一个函数，通过store.dispatch，action将会被自动执行
+    // 正因为这里action是一个函数，所以才用了thunk，并且会自动执行这个函数，如果不用thunk，那么这里只能是一个对象
+    store.dispatch(action)
   }
 
   // store发生变化，及时更新组件数据
