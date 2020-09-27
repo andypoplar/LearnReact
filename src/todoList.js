@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css'
 import store from './store/index'
-import { getInputChangeAction, getAddItemAction, getDeleteItemAction, getTodoList } from './store/actionCreators';
+import { getInputChangeAction, getAddItemAction, getDeleteItemAction, getInitList } from './store/actionCreators';
 import TodoListUI from './todoListUI'
 
 class TodoList extends Component {
@@ -26,9 +26,7 @@ class TodoList extends Component {
   }
 
   componentDidMount() {
-    const action = getTodoList()
-    // getTodoList 返回一个函数，通过store.dispatch，action将会被自动执行
-    // 正因为这里action是一个函数，所以才用了thunk，并且会自动执行这个函数，如果不用thunk，那么这里只能是一个对象
+    const action = getInitList()
     store.dispatch(action)
   }
 
@@ -54,3 +52,21 @@ class TodoList extends Component {
 }
 
 export default TodoList
+
+/**
+ * 2、组件和store做连接
+ * import connect from 'react-redux'
+ * 
+ * const mapStateToProps = (state) => {
+ *   return {
+ *      inputValue: state.inputValue  // dom 中绑定的inputValue也要改变 ==> this.props.inputValue
+ *    }
+ * }
+ * 
+ * const mapDispatchToProps = (dispatch) => {
+ *   return {
+ *     方法名写这里
+ *   }
+ * }
+ * export default connect(mapStateToProps, mapDispatchToProps)(TodoList)
+ */
