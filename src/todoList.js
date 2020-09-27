@@ -61,9 +61,9 @@ class TodoList extends Component {
             className="input"
             value={this.state.inputValue}
             onChange={this.handleInputChange}
-            ref={(input) => {this.input = input}}  
+            ref={(input1) => {this.input2 = input1}}  
           />
-          <button onClick={this.handleSubmitClick}>提交</button>
+          <button onClick={() => this.handleSubmitClick()}>提交</button>
         </div>
         <div>
           <ul ref={(ul) => {this.ul = ul}}>{this.getTodoList()}</ul>
@@ -90,7 +90,7 @@ class TodoList extends Component {
   }
 
   handleInputChange(e) {
-    const inputValue = this.input.value
+    const inputValue = this.input2.value
     this.setState(() => ({
       inputValue
     }))
@@ -101,12 +101,12 @@ class TodoList extends Component {
 
   handleSubmitClick() {
     // prevState：修改数据之前的那一次数据，等价于this.state
-    this.setState((prevState) => ({
-      list: [...prevState.list, prevState.inputValue],
-      inputValue: ''
-    }), () => { // 异步执行完之后再执行
-      // console.log(this.ul.querySelectorAll('div').length)
-    })
+    // this.setState((prevState) => ({
+    //   list: [...prevState.list, prevState.inputValue],
+    //   inputValue: ''
+    // }), () => { // 异步执行完之后再执行
+    //   // console.log(this.ul.querySelectorAll('div').length)
+    // })
 
     // this.setState({
     //   list: [...this.state.list, this.state.inputValue],
